@@ -1,9 +1,19 @@
 const API_KEY = 'AIzaSyAKf8WzsQxw1Vnnr9eRBisCKbSkOtmUm04'; // Replace with your actual API Key
 const SHEET_ID = '1ym-RXBCwYhZcABTx4_7eNxTxVahUaXZJO9LLx7zQv_o'; // Replace with your actual Google Sheet ID
 const RANGE = 'Sheet1'; // Adjust based on your actual range
+let sheetData = []; // To store the fetched data
+
+document.addEventListener('DOMContentLoaded', () => {
+    fetchSheetData(); // Fetch data when the page loads
+});
 
 document.getElementById('filterBtn').addEventListener('click', () => {
-    fetchSheetData();
+    const filters = {
+        size: document.getElementById('size').value,
+        resolution: document.getElementById('resolution').value,
+        refreshRate: document.getElementById('refreshRate').value,
+    };
+    filterAndDisplayMonitors(sheetData, filters); // Filter based on input
 });
 
 function fetchSheetData() {
@@ -12,13 +22,8 @@ function fetchSheetData() {
     fetch(baseApiUrl)
         .then(response => response.json())
         .then(data => {
-            const rows = data.values;
-            const filters = {
-                size: document.getElementById('size').value,
-                resolution: document.getElementById('resolution').value,
-                refreshRate: document.getElementById('refreshRate').value,
-            };
-            filterAndDisplayMonitors(rows, filters);
+            sheetData = data.values; // Store fetched data
+            filterAndDisplayMonitors(sheetData, {}); // Display all data initially
         }).catch(error => {
             console.error('Error fetching data: ', error);
         });
@@ -27,7 +32,8 @@ function fetchSheetData() {
 function filterAndDisplayMonitors(rows, filters) {
     const resultsContainer = document.getElementById('results');
     resultsContainer.innerHTML = ''; // Clear previous results
-    rows.shift(); // Remove header row
+    rows.shift(); // Remove header row, if it hasn't been removed already
+
     rows.forEach(row => {
         // Assuming the order is: Name, Size, Resolution, Refresh Rate, Link
         const [name, size, resolution, refreshRate, link] = row;
