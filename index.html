@@ -1,1 +1,23 @@
-hello world
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor Finder</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+    <div class="filter-section">
+        <label for="size">Size:</label>
+        <input type="text" id="size" placeholder="e.g., 24">
+        <label for="resolution">Resolution:</label>
+        <input type="text" id="resolution" placeholder="e.g., 1080p">
+        <label for="refreshRate">Refresh Rate:</label>
+        <input type="text" id="refreshRate" placeholder="e.g., 144Hz">
+        <button id="filterBtn" disabled>Filter</button>
+    </div>
+    <div class="results-section" id="results"></div>
+    <script src="script.js"></script>
+</body>
+</html>
